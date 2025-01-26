@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "proxy": "https://chat-backend-8bgc.onrender.com",
+  "proxy": "https://chat-backend-1-uwh3.onrender.com",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^1.0.13",
