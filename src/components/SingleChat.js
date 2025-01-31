@@ -16,7 +16,7 @@ import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 
-const ENDPOINT = "https://chat-backend-2-6o67.onrender.com"; // Backend URL
+const ENDPOINT = "https://chat-backend-3-xugy.onrender.com"; // Backend URL
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
