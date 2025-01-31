@@ -42,7 +42,11 @@ const Login = () => {
         },
       };
 
-      const { data } = await axios.post("/api/user/login", { email, password }, config);
+      const { data } = await axios.post(
+        "https://chat-backend-2-6o67.onrender.com/api/user/login", // Updated backend URL
+        { email, password },
+        config
+      );
 
       toast({
         title: "Login Successful",
@@ -105,7 +109,6 @@ const Login = () => {
       >
         Login
       </Button>
-     
     </VStack>
   );
 };
