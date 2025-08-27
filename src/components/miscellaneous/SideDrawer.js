@@ -196,25 +196,32 @@ function SideDrawer() {
         <DrawerOverlay />
         <DrawerContent bg="#ADD8E6">
           <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
-          <DrawerBody>
-            <Box d="flex" pb={2}>
-              <Input
-                placeholder="Search by name or email"
-                mr={2}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              {loading && <Spinner ml={2} />}
-            </Box>
-            {searchResult.map((user) => (
-              <UserListItem
-                key={user._id}
-                user={user}
-                handleFunction={() => accessChat(user._id)}
-              />
-            ))}
-            {loadingChat && <Spinner ml="auto" d="flex" />}
-          </DrawerBody>
+         <DrawerBody>
+  <Box d="flex" pb={2}>
+    <Input
+      placeholder="Search by name or email"
+      mr={2}
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+    {loading && <Spinner ml={2} />}
+  </Box>
+
+  {Array.isArray(searchResult) && searchResult.length > 0 ? (
+    searchResult.map((user) => (
+      <UserListItem
+        key={user._id}
+        user={user}
+        handleFunction={() => accessChat(user._id)}
+      />
+    ))
+  ) : (
+    !loading && <Text>No users found</Text>
+  )}
+
+  {loadingChat && <Spinner ml="auto" d="flex" />}
+</DrawerBody>
+
         </DrawerContent>
       </Drawer>
     </>
