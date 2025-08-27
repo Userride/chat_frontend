@@ -19,14 +19,27 @@ const MyChats = ({ fetchAgain }) => {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user?.token}`,
         },
       };
 
-      const { data } = await axios.get("/api/chat", config);
-      console.log("Fetched chats:", data); // Debugging line
-      setChats(data);
+      const { data } = await axios.get(
+        "https://chat-backend-3-xugy.onrender.com/api/chat",
+        config
+      );
+
+      console.log("✅ Fetched chats:", data);
+
+      // Ensure data is always an array
+      if (Array.isArray(data)) {
+        setChats(data);
+      } else {
+        console.error("❌ API returned non-array chats:", data);
+        setChats([]);
+      }
     } catch (error) {
+      console.error("❌ Error fetching chats:", error);
+
       toast({
         title: "Error Occured!",
         description: "Failed to Load the chats",
@@ -40,17 +53,17 @@ const MyChats = ({ fetchAgain }) => {
 
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
-    fetchChats();
+    if (user) fetchChats();
     // eslint-disable-next-line
-  }, [fetchAgain]);
+  }, [fetchAgain, user]);
 
   return (
     <Box
-      d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+      display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
       p={3}
-      bg="gray.800" // Dark background for the chat container
+      bg="gray.800"
       w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
       borderWidth="1px"
@@ -60,16 +73,16 @@ const MyChats = ({ fetchAgain }) => {
         px={3}
         fontSize={{ base: "28px", md: "30px" }}
         fontFamily="Work sans"
-        d="flex"
+        display="flex"
         w="100%"
         justifyContent="space-between"
         alignItems="center"
-        color="white" // White text for the header
+        color="white"
       >
         My Chats
         <GroupChatModal>
           <Button
-            d="flex"
+            display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
             rightIcon={<AddIcon />}
             colorScheme="teal"
@@ -78,32 +91,33 @@ const MyChats = ({ fetchAgain }) => {
           </Button>
         </GroupChatModal>
       </Box>
+
       <Box
-        d="flex"
+        display="flex"
         flexDir="column"
         p={3}
-        bg="gray.700" // Darker background for the chat list
+        bg="gray.700"
         w="100%"
         h="100%"
         borderRadius="lg"
         overflowY="hidden"
       >
-        {chats ? (
+        {Array.isArray(chats) && chats.length > 0 ? (
           <Stack overflowY="scroll">
             {chats.map((chat) => (
               <Box
                 onClick={() => {
-                  console.log("Chat clicked:", chat); // Debugging line
+                  console.log("💬 Chat clicked:", chat);
                   setSelectedChat(chat);
                 }}
                 cursor="pointer"
-                bg={selectedChat === chat ? "teal.500" : "gray.600"} // Highlight selected chat
-                color="white" // White text
+                bg={selectedChat === chat ? "teal.500" : "gray.600"}
+                color="white"
                 px={3}
                 py={2}
                 borderRadius="lg"
                 key={chat._id}
-                _hover={{ bg: "gray.500" }} // Hover effect
+                _hover={{ bg: "gray.500" }}
               >
                 <Text>
                   {!chat.isGroupChat
